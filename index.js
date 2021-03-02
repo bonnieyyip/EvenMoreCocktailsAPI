@@ -3,36 +3,26 @@
  */
 const express = require("express");
 const bodyParser = require("body-parser");
-const logger = require("morgan");
-const path = require("path");
+const cors = require("cors");
 const app = express();
+const mongoose = require("mongoose");
+require("dotenv/config");
 
 const PORT = process.env.PORT || 3000;
-const NODE_ENV = process.env.NODE_ENV || "development";
+// const NODE_ENV = process.env.NODE_ENV || "development";
 
-app.set("port", PORT);
-app.set("env", NODE_ENV);
-
-app.use(logger("tiny"));
+//Middlewares
+app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/", require(path.join(__dirname, "routes/cocktails")));
+const apiRoute = require('./routes/posts');
+app.use('/api/v1/cocktails', apiRoute);
 
-app.use((req, res, next) => {
-    const err = new Error(`${req.method} ${req.url} Not Found`);
-    err.status = 404;
-    next(err);
-});
+mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true },
+    () => console.log("Connected to DB")
+);
 
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(err.status || 500);
-    res.json({
-        error: {
-            message: err.message,
-        },
-    });
-});
+app.set("port", PORT);
 
 app.listen(PORT, () => {
     console.log(
