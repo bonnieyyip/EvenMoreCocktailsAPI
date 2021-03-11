@@ -15,8 +15,8 @@ router.get('/', async (req, res) => {
 //Submit a post
 router.post('/', async (req, res) => {
     const post = new Post({
-        title: req.body.title,
-        description: req.body.description
+        strDrink: req.body.strDrink,
+        strInstructions: req.body.strInstructions
     });
 
     try {
@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
 //Delete a specific post
 router.delete('/:id', async (req, res) => {
     try {
-        const removedPost = await Post.remove({_id: req.params.id});
+        const removedPost = await Post.remove({idDrink: req.params.id});
         res.json(removedPost);
     } catch (e) {
         res.json({ message: e });
@@ -51,8 +51,8 @@ router.delete('/:id', async (req, res) => {
 router.patch('/:id', async (req, res) => {
     try {
         const updatedPost = await Post.updateOne(
-            {_id: req.params.id}, 
-            { $set: {title: req.body.title} 
+            {idDrink: req.params.id}, 
+            { $set: {strDrink: req.body.strDrink} 
         });
         res.json(updatedPost);
     } catch (e) {
