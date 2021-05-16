@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 //Middlewares
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 
 const apiRoute = require('./routes/posts');
 app.use('/api/v1/cocktails', apiRoute);

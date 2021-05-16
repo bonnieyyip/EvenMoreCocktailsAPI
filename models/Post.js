@@ -9,20 +9,24 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    strDrinkThumb: {
+        type: String,
+        data: Buffer,
+        required: true
+    },
     dateSubmitted: {
         type: Date,
         default: Date.now
     }
 });
 
-PostSchema.method('transform', function() {
-    var obj = this.toObject();
+PostSchema.virtual('idDrink').get(function(){
+    return this._id.toHexString();
+});
 
-    //Rename fields
-    obj.idDrink = obj._id;
-    delete obj._id;
-
-    return obj;
+// Ensure virtual fields are serialised.
+PostSchema.set('toJSON', {
+    virtuals: true
 });
 
 module.exports = mongoose.model('Posts', PostSchema);

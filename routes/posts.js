@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const post = new Post({
         strDrink: req.body.strDrink,
-        strInstructions: req.body.strInstructions
+        strInstructions: req.body.strInstructions,
+        strDrinkThumb: req.body.strDrinkThumb
     });
 
     try {
